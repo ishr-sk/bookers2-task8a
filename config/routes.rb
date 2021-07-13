@@ -20,5 +20,10 @@ Rails.application.routes.draw do
     get :follows, on: :member 
     get :followers, on: :member
   end
+  
+  # チャットのメッセージを管理する場所
+  resources :messages, only: [:create]
+  # チャットするための場所
+  resources :rooms, only: [:create, :show]
 
 end
