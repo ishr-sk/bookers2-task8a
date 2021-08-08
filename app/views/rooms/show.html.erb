@@ -1,0 +1,34 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-4'>
+
+        <div class="user-name">
+          <h2>
+            <%= @room.name %>さんとのチャット
+          </h>
+        </div>
+
+      <div class="chats">
+        <div class="text-right">
+          <% if @messages.present? %>
+            <% @messages.each do |m| %>
+              <div class="chat-box">
+                <div class="chat-hukidashi">
+                  <%= m.content %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="posts">
+        <%= form_for @message do |f| %>
+          <%= f.text_field :content, class:"form-text-field" %>
+          <%= f.hidden_field :room_id, value: @room.id %>
+        　<!--イコール消すとボタンなくなりenter keyでsubmitできる-->
+          <% f.submit "投稿",class: 'form-submit'%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

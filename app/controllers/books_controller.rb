@@ -1,7 +1,7 @@
 class BooksController < ApplicationController
   # 他ユーザーのbookを編集できないようにする
   # = ensure_correct_user
-  before_action :ensure_correct_user, only: [:edit, :update]
+ before_action :ensure_correct_user, only: [:edit, :update]
 
   def show
     @book_new = Book.new
@@ -12,8 +12,15 @@ class BooksController < ApplicationController
   end
 
   def index
+    to  = Time.current.at_end_of_day
+    from  = (to - 6.day).at_beginning_of_day
+    @books = Book.includes(:favorited_users).
+      sort {|a,b| 
+        b.favorited_users.includes(:favorites).where(created_at: from...to).size <=> 
+        a.favorited_users.includes(:favorites).where(created_at: from...to).size
+      }
     @book = Book.new
-    @books = Book.all.
+    # @books = Book.all.
   end
 
   def create
@@ -59,7 +66,7 @@ class BooksController < ApplicationController
       redirect_to books_path
     end
   end
-  
+
   def sort_params
     params.permit(:sort)
   end

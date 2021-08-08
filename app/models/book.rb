@@ -8,6 +8,9 @@ class Book < ApplicationRecord
 	 	favorites.where(user_id: user.id).exists?
 	 end
 
+	 # 下記追加（favoritesテーブルを通って、userモデルのデータを持ってくるって意味？？）
+	 has_many :favorited_users, through: :favorites, source: :user
+
   # ================ 検索機能 ================
   def self.search(search, word)
     if search == "perfect_match"
